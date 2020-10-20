@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+    <script src='yt-frame.js' type='text/javascript'>
+    <script src='audio.js' type='text/javascript'>
+
+    <!-- <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId: 'cLwk_PMFiAM',
+          playerVars: { 'autoplay': 0, 'controls': 0 },
+          events: {
+            // 'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      // function onPlayerReady(event) {
+      //   event.target.playVideo();
+      // }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+        if (event.data == YT.PlayerState.PLAYING && !done) {
+          setTimeout(stopVideo, 6000);
+          done = true;
+        }
+      }
+
+      function stopVideo() {
+        player.stopVideo();
+      }
+
+      function map(n, start1, stop1, start2, stop2, withinBounds) {
+        const newval = (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
+        if (!withinBounds) {
+          return newval;
+        }
+        if (start2 < stop2) {
+          return this.constrain(newval, start2, stop2);
+        } else {
+          return this.constrain(newval, stop2, start2);
+        }
+      };
+
+      window.addEventListener('mousemove', e => {
+         let vol = map(e.clientX, 0, window.innerWidth, 0, 100)
+         console.log(player.getVolume());
+         player.setVolume(vol);
+       });
+    </script> -->
+    <audio id="audiotoplay"
+         src="footsteps.mp3" type="audio/mpeg" preload="auto">Please work dummy
+    </audio>
+      <script type="text/javascript">
+        // The context is the base for the API.
+        // var audioContext = new AudioContext();
+        // We can load an audio file by using an audio tag
+        var audiotoload = document.getElementById("audiotoplay");
+        // var audioSource = audioContext.createMediaElementSource(audiotoload);
+
+        // To simply play it, we can connect it to the "destination" or default output of the context
+        // audioSource.connect(audioContext.destination); // Connect to the default output
+
+        var isPlaying = false;
+
+        function togglePlay() {
+          isPlaying ? audiotoload.pause() : audiotoload.play();
+        };
+
+        audiotoload.onplaying = function() {
+          isPlaying = true;
+        };
+        audiotoload.onpause = function() {
+          isPlaying = false;
+        };
+
+        window.addEventListener('mousedown', () => {
+          togglePlay();
+          // console.log(e);
+          // audiotoload.play();
+        });
+        </script>
+
+
+  </body>
+</html>

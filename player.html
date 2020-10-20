@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: black;
+        font-family: monospace;
+        color: #ffffff;
+      }
+
+      center {
+        margin: 0 auto
+      }
+      /* from https://www.w3schools.com/howto/howto_js_rangeslider.asp */
+      .slidecontainer {
+        position: absolute;
+        top:  66%;
+        /* left: 50%; */
+        text-align: center;
+        margin: 0 auto;
+        width: 100%;
+        /* transform: translate(-50%,-50%); */
+      }
+
+            /* The slider itself */
+      .slider {
+        -webkit-appearance: none;  /* Override default CSS styles */
+        appearance: none;
+        width: 300px; /* Full-width */
+        height: 12px; /* Specified height */
+        background: #ffffff; /* Grey background */
+        outline: none; /* Remove outline */
+        opacity: 0.9; /* Set transparency (for mouse-over effects on hover) */
+        -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+        transition: opacity .2s;
+        border-radius: 5px;
+      }
+
+      /* Mouse-over effects */
+      .slider:hover {
+        opacity: 1; /* Fully shown on mouse-over */
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 20px; /* Set a specific slider handle width */
+        height: 12px; /* Slider handle height */
+        background: #00ff00; /* Green background */
+        /* opacity: 0.8; */
+        cursor: pointer; /* Cursor on hover */
+        border-radius: 20px;
+      }
+
+      #player {
+        position: absolute;
+        top:  33%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+      }
+    </style>
+    <script src='yt-iframe.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div id="player"></div>
+    <audio id="audiotoplay" loop="true" src="footsteps.mp3"
+            type="audio/mpeg" preload="auto">Please work dummy
+    </audio>
+
+    <div class="slidecontainer">
+      <text class="center">Use the fader to choose your soundtrack.</text><br><br>
+      <text id='foley-text'>The Foley Artist</text>
+      <input type="range" width="500" min="1" max="100" value="1" class="slider" id="volume">
+      <text id='ai-text'>Digital Intelligence</text>
+    </div>
+        <script src='audio.js' type='text/javascript'></script>
+    <script type="text/javascript">
+      var audiotoload = document.getElementById("audiotoplay");
+      var slider = document.getElementById("volume");
+      let volume = slider.value = 100;
+      let firstTime = true;
+
+      // Update the current slider value (each time you drag the slider handle)
+      slider.oninput = function() {
+        volume = this.value;
+        // console.log("volume is ", volume)
+        let mapVolume = map(volume, 0, 100, 1.0, 0.0);
+        let foleyText = document.getElementById("foley-text");
+        let aiText = document.getElementById("ai-text");
+        player.setVolume(volume);
+        audiotoload.volume = mapVolume;
+        if (!firstTime) {
+          foleyText.style.opacity = map(volume, 0, 100, 1.0, 0.1);
+          aiText.style.opacity = map(volume, 0, 100, 0.1, 1.0);
+        }
+
+        console.log("video volume is ", volume)
+        console.log("audio volume is ", mapVolume)
+      }
+
+      function map(n, start1, stop1, start2, stop2, withinBounds) {
+        const newval = (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
+        if (!withinBounds) {
+          return newval;
+        }
+        if (start2 < stop2) {
+          return this.constrain(newval, start2, stop2);
+        } else {
+          return this.constrain(newval, stop2, start2);
+        }
+      };
+    </script>
+  </body>
+</html>
